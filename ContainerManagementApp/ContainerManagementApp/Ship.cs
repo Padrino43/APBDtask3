@@ -39,7 +39,7 @@ public class Ship
 
     public bool LoadMultipleContainers(List<Container> containers)
     {
-        if(_containers.Count + containers.Count > MaxContainers) return false;
+        if(containers.Count + _containers.Count > MaxContainers) return false;
         
         double sum = 0;
         foreach (var container in containers)
@@ -72,7 +72,11 @@ public class Ship
 
     public void MoveContainer(Container container, Ship toShip)
     {
-        if(!_containers.Contains(container)) return;
+        if (!_containers.Contains(container))
+        {
+            Console.WriteLine("Error with moving container");
+            return;
+        }
 
         if (toShip.LoadSingleContainer(container))
         {
@@ -82,7 +86,7 @@ public class Ship
         
     }
 
-    public void ReplaceContainer(Container container, String serialNumber)
+    public Container? ReplaceContainer(Container container, string serialNumber)
     {
         bool finded = false;
         int index = 0;
@@ -99,10 +103,33 @@ public class Ship
 
         if (finded)
         {
-            _containers[index] = container;
-            Console.WriteLine("Positive replace "+container);
+            double sum = (_containers[index].MaxCapacity + _containers[index].Weight)
+                - (container.MaxCapacity + container.Weight);
+            if (sum < 0 && Math.Abs(sum) <= MaxContainersWeight)
+            {
+                Container temp = _containers[index];
+                _containers[index] = container;
+                Console.WriteLine("Positive replace "+container);
+                return temp;
+            }
+            
         }
-        
+
+        return null;
+    }
+    public int GetContainerListLenght()
+    {
+        return _containers.Count;
+    }
+
+    public Container? GetContainer(int index)
+    {
+        if (index >= 0 && index < _containers.Count())
+        {
+            return _containers[index];
+        }
+
+        return null;
     }
 
     public override string ToString()
@@ -120,4 +147,5 @@ public class Ship
         
         return toReturn;
     }
+    
 }
