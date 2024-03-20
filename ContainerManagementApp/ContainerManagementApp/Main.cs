@@ -1,6 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Diagnostics;
-using System.Threading.Channels;
+﻿
 using ContainerManagementApp;
 
 List<Ship> ships = new List<Ship>();
@@ -8,11 +6,10 @@ List<Container> containers = new List<Container>();
 Ship? choosedShip = null;
 bool isWorking = true;
 int option;
-Console.ReadLine();
-Console.Clear();
 
 while (isWorking)
 {
+    Console.Clear();
     if(choosedShip != null)
         Console.WriteLine("Choosed ship:\n"+choosedShip);
     Console.WriteLine("Options:\n(1)Ship\n(2)Container\n(3)Exit");
@@ -97,7 +94,7 @@ while (isWorking)
                     {
                         if (containers.Count > 0 && choosedShip != null)
                         {
-                            Console.WriteLine("Options:");
+                            Console.Clear();
                             Console.WriteLine("Options:\n(1)Add container\n(2)Add containers");
                             option = Convert.ToInt32(Console.ReadLine());
                             for (int i = 0; i < containers.Count; i++)
@@ -134,6 +131,10 @@ while (isWorking)
                                             Console.WriteLine("Adding not successful");
                                             containers.AddRange(tempList);
                                         }
+                                        else
+                                        {
+                                            Console.WriteLine("Positive added container");
+                                        }
                                     }
                                     else
                                     {
@@ -144,7 +145,8 @@ while (isWorking)
                                 }
                                 
                             }
-                            
+                            Console.ReadLine();
+                            Console.Clear();
                         }
 
                         break;
@@ -244,7 +246,6 @@ while (isWorking)
                     case 8:
                     {
                         isWorking = false;
-                        Console.Clear();
                         break;
                     }
                     
@@ -257,9 +258,158 @@ while (isWorking)
         }
         case 2:
         {
-            
-            Console.WriteLine("Options:\n(1)Add container\n(2)Load container\n(3)Delete container\n(4)Return");
-            
+           
+            while (isWorking)
+            {
+                Console.Clear();
+                Console.WriteLine("Options:\n(1)Add container\n(2)Load container\n(3)Unload container\n" +
+                                  "(4)Delete container\n(5)Return");
+                option = Convert.ToInt32(Console.ReadLine());
+                switch (option)
+                {
+                    case 1:
+                    {
+                        Console.Clear();
+                        double height;
+                        double weight;
+                        double depth;
+                        double maxCapacity;
+                        Console.WriteLine("Options:\n(1)Liquid container\n(2)Gas container\n(3)Refrigerated container");
+                        option = Convert.ToInt32(Console.ReadLine());
+                        if (option >= 0 && option < 4)
+                        {
+                            Console.WriteLine("Enter height");
+                            height = Convert.ToDouble(Console.ReadLine());
+                            Console.WriteLine("Enter weight");
+                            weight = Convert.ToDouble(Console.ReadLine());
+                            Console.WriteLine("Enter depth");
+                            depth = Convert.ToDouble(Console.ReadLine());
+                            Console.WriteLine("Enter maxCapacity");
+                            maxCapacity = Convert.ToDouble(Console.ReadLine());
+                            switch (option)
+                            {
+                                case 1:
+                                {
+                                    Console.WriteLine("Which cargo it will transport\n(1)DANGER\n(2)NORMAL");
+                                    option = Convert.ToInt32(Console.ReadLine());
+                                    if (option == 1)
+                                    {
+                                        containers.Add(
+                                            new LContainer(height, weight, depth, maxCapacity, LoadType.DANGER ));
+                                        Console.WriteLine("Added new container");
+                                    }
+                                    if (option == 2)
+                                    {
+                                        containers.Add(
+                                            new LContainer(height, weight, depth, maxCapacity, LoadType.NORMAL ));
+                                        Console.WriteLine("Added new container");
+                                    }
+
+                                    break;
+                                }
+                                case 2:
+                                {
+                                    containers.Add(
+                                        new GContainer(height, weight, depth, maxCapacity));
+                                    Console.WriteLine("Added new container");
+                                    break;
+                                }
+                                case 3:
+                                {
+                                    containers.Add(
+                                        new CContainer(height, weight, depth, maxCapacity));
+                                    Console.WriteLine("Added new container");
+                                    break;
+                                }
+
+                            }
+                            Console.ReadLine();
+                            Console.Clear();
+                        }
+
+                        break;
+                    }
+                    
+                    case 2:
+                    {
+                        if (containers.Count() > 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Which container do you want to load");
+                            for (int i = 0; i < containers.Count(); i++)
+                            {
+                                Console.WriteLine($"({i}){containers[i]}");
+                            }
+
+                            option = Convert.ToInt32(Console.ReadLine());
+                            if (option >= 0 && option <= containers.Count())
+                            {
+                                double weight;
+                                Console.WriteLine("Enter weight to add to container");
+                                weight = Convert.ToDouble(Console.ReadLine());
+                                containers[option].LoadCargo(weight);
+                            }
+                            Console.ReadLine();
+                            Console.Clear();
+                        }
+                        
+                        break;
+                    }
+                    case 3:
+                    {
+                        if (containers.Count() > 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Which container do you want to unload");
+                            for (int i = 0; i < containers.Count(); i++)
+                            {
+                                Console.WriteLine($"({i}){containers[i]}");
+                            }
+
+                            option = Convert.ToInt32(Console.ReadLine());
+                            if (option >= 0 && option <= containers.Count())
+                            {
+                                containers[option].UnloadCargo();
+                            }
+                            Console.ReadLine();
+                            Console.Clear();
+                        }
+                        break;
+                    }
+                    case 4:
+                    {
+                        if (containers.Count() > 0)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Which container do you want to delete");
+                            for (int i = 0; i < containers.Count(); i++)
+                            {
+                                Console.WriteLine($"({i}){containers[i]}");
+                            }
+
+                            option = Convert.ToInt32(Console.ReadLine());
+                            if (option >= 0 && option <= containers.Count())
+                            {
+                                containers.RemoveAt(option);
+                                Console.WriteLine("Positive container remove");
+                            }
+                            Console.ReadLine();
+                            Console.Clear();
+                        }
+                        break;
+                    }
+                    
+                    case 5:
+                    {
+                        isWorking = false;
+                        break;
+                    }
+                    
+                }
+                
+            }
+
+            isWorking = true;
             break;
         }
         case 3:

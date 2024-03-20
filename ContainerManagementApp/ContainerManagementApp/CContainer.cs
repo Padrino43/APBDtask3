@@ -29,9 +29,9 @@ public class CContainer(double height, double weight, double depth, double maxCa
             option = Convert.ToInt32(Console.ReadLine());
         }
         
-        ChoosedProduct = arr[option];
+        
         base.LoadCargo(weightToLoad);
-
+        ChoosedProduct = arr[option];
     }
 }
 
