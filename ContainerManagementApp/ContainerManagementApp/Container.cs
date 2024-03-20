@@ -4,10 +4,9 @@ public abstract class Container(double height, double weight, double depth, stri
 double maxCapacity)
 {
     private static string _defaultSerialNumber = "KON";
-    private static int _id = 0;
+    private static int _id = 1;
 
-
-    public int Id { get; } = _id;
+    
     public double CargoWeight { get; protected set; } = 0;
     public double Height { get; } = height;
     public double Weight { get; } = weight;
@@ -28,7 +27,7 @@ double maxCapacity)
 
     public virtual void LoadCargo(double weightToLoad)
     {
-        if (weightToLoad + CargoWeight > maxCapacity)
+        if (weightToLoad + CargoWeight > MaxCapacity)
         {
             throw new OverfillException("Container overfilled");
         }
@@ -37,7 +36,9 @@ double maxCapacity)
         Console.WriteLine("Positive cargo load with" + weightToLoad+" kg");
         
     }
-
-
-
+    
+    public override string ToString()
+    {
+        return $"Container {SerialNumber}, weight={Weight} (cargo={CargoWeight}/{MaxCapacity}[kg], H/D={Height}/{Depth})";
+    }
 }

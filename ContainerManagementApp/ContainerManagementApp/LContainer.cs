@@ -17,7 +17,7 @@ public class LContainer(double height, double weight, double depth, double maxCa
         {
             case LoadType.NORMAL:
             {
-                if (weightToLoad + CargoWeight > maxCapacity * 0.90)
+                if (weightToLoad + CargoWeight > MaxCapacity * 0.90)
                 {
                     NotifyHazard("Safe cargo overloaded(max 90%)");
                 }
@@ -30,7 +30,7 @@ public class LContainer(double height, double weight, double depth, double maxCa
             }
             case LoadType.DANGER:
             {
-                if (weightToLoad + CargoWeight > maxCapacity / 2)
+                if (weightToLoad + CargoWeight > MaxCapacity / 2)
                 {
                     NotifyHazard("Danger cargo overloaded(max 50%)");
                 }

@@ -3,25 +3,34 @@
 public class CContainer(double height, double weight, double depth, double maxCapacity) 
     : Container(height, weight, depth,"C", maxCapacity)
 {
-    public Product? ChoosedProduct { get; } = null;
+    public Product? ChoosedProduct { get; private set; } = null;
     public double Temperature { get; } = new Random().Next(-300,205) / 10.0;
 
 
     public override void LoadCargo(double weightToLoad)
     {
-        int option;
+        int option = 100;
         int counter = 0;
         Console.WriteLine("Actual Temperature: "+Temperature);
-        foreach (var product in Enum.GetValues<Product>())
+        var arr = Enum.GetValues<Product>();
+        while (option > counter || option < 0)
         {
-            if ((int)product > Temperature)
+            counter = 0;
+            foreach (var product in arr)
             {
-                Console.WriteLine("("+counter+")"+product);
-                counter++;
-            }
+                if ((int)product > Temperature)
+                {
+                    Console.WriteLine("(" + counter + ")" + product);
+                    counter++;
+                }
 
+            }
+            option = Convert.ToInt32(Console.ReadLine());
         }
         
+        ChoosedProduct = arr[option];
+        base.LoadCargo(weightToLoad);
+
     }
 }
 
