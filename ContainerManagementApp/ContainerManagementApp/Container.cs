@@ -13,9 +13,11 @@ double maxCapacity)
     public double Depth { get; } = depth;
     public string SerialNumber { get; } = _defaultSerialNumber +"-"+ name+"-"+_id++;
     public double MaxCapacity { get; } = maxCapacity;
+    public bool IsOnShip { get; set; } = false;
 
     public virtual void UnloadCargo()
     {
+        if (IsOnShip) return;
         if (CargoWeight != 0)
         {
             CargoWeight = 0;
@@ -27,13 +29,14 @@ double maxCapacity)
 
     public virtual void LoadCargo(double weightToLoad)
     {
+        if (IsOnShip) return;
         if (weightToLoad + CargoWeight > MaxCapacity)
         {
             throw new OverfillException("Container overfilled");
         }
         
         CargoWeight += weightToLoad;
-        Console.WriteLine("Positive cargo load with" + weightToLoad+" kg");
+        Console.WriteLine("Positive cargo load with " + weightToLoad+" kg");
         
     }
     

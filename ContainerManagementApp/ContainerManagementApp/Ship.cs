@@ -26,12 +26,13 @@ public class Ship
 
     public bool LoadSingleContainer(Container container)
     {
+        if (container.IsOnShip) return false;
         if(_containers.Count + 1 > MaxContainers) return false;
         if (Weight + container.Weight * 0.001 > MaxContainersWeight) return false;
 
         Weight += container.Weight * 0.001;
         _containers.Add(container);
-
+        Console.WriteLine("Positive load "+container);
 
         return true;
     }
@@ -43,11 +44,16 @@ public class Ship
         double sum = 0;
         foreach (var container in containers)
         {
+            if (container.IsOnShip) return false;
             sum += container.Weight * 0.001;
         }
         
         if (Weight + sum > MaxContainersWeight) return false;
 
+        foreach (var container in containers)
+        {
+            container.IsOnShip = true;
+        }
         Weight += sum;
         _containers.AddRange(containers);
 
@@ -59,6 +65,8 @@ public class Ship
         if (!_containers.Contains(container)) return;
 
         _containers.Remove(container);
+        container.IsOnShip = false;
+        
         Console.WriteLine("Positive remove :" + container);
     }
 
@@ -99,6 +107,17 @@ public class Ship
 
     public override string ToString()
     {
-        return $"Ship {Id} (speed={MaxSpeed}, maxContainerNum={MaxContainers}, maxWeight={MaxContainersWeight})";
+        string toReturn = $"Ship {Id} (speed={MaxSpeed}, maxContainerNum={MaxContainers}, " +
+                          $"maxWeight={MaxContainersWeight})\n";
+        if (_containers.Count > 0)
+        {
+            foreach (var container in _containers)
+            {
+                toReturn += container + "\n";
+            }
+            
+        }
+        
+        return toReturn;
     }
 }
