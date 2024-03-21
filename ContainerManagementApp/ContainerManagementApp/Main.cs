@@ -117,12 +117,17 @@ while (isWorking)
                                     Console.WriteLine("Write numbers with enter (Exit when number is out of bound)");
                                     while (option >= 0 && option < containers.Count())
                                     {
+                                        Console.Clear();
+                                        for (int i = 0; i < containers.Count; i++)
+                                        {
+                                            Console.WriteLine($"({i}){containers[i]}");
+                                        }
                                         option = Convert.ToInt32(Console.ReadLine());
                                         tempList.Add(containers[option]);
                                         containers.RemoveAt(option);
                                     }
                                     
-                                    Console.WriteLine("Do you sure you want add this containers?\n(1)yes");
+                                    Console.WriteLine("Do you sure you want add these containers?\n(1)yes");
                                     option = Convert.ToInt32(Console.ReadLine());
                                     if (option == 1)
                                     {
@@ -133,7 +138,7 @@ while (isWorking)
                                         }
                                         else
                                         {
-                                            Console.WriteLine("Positive added container");
+                                            Console.WriteLine("Adding successful");
                                         }
                                     }
                                     else
@@ -155,6 +160,7 @@ while (isWorking)
                     {
                         if (choosedShip != null && choosedShip.GetContainerListLenght() > 0)
                         {
+                            Console.Clear();
                             Console.WriteLine("Which container to move?");
                             Container tempCon;
                             for (int i = 0; i < choosedShip.GetContainerListLenght(); i++)
@@ -189,6 +195,7 @@ while (isWorking)
                     {
                         if (choosedShip != null && choosedShip.GetContainerListLenght() > 0 && containers.Count() > 0)
                         {
+                            Console.Clear();
                             Console.WriteLine("Write container serial number to replace");
                             for (int i = 0; i < choosedShip.GetContainerListLenght(); i++)
                             {
@@ -197,9 +204,9 @@ while (isWorking)
                             string serialNumber = Console.ReadLine().ToUpper();
                             
                             Console.WriteLine("Choose container to put on ship");
-                            for (int i = 0; i < choosedShip.GetContainerListLenght(); i++)
+                            for (int i = 0; i < containers.Count(); i++)
                             {
-                                Console.WriteLine($"({i}){choosedShip.GetContainer(i)}");
+                                Console.WriteLine($"({i}){containers[i]}");
                             }
                             option = Convert.ToInt32(Console.ReadLine());
                             
@@ -223,6 +230,7 @@ while (isWorking)
                     {
                         if (choosedShip != null && choosedShip.GetContainerListLenght() > 0)
                         {
+                            Console.Clear();
                             Console.WriteLine("Choose container to remove");
                             for (int i = 0; i < choosedShip.GetContainerListLenght(); i++)
                             {
@@ -278,13 +286,13 @@ while (isWorking)
                         option = Convert.ToInt32(Console.ReadLine());
                         if (option >= 0 && option < 4)
                         {
-                            Console.WriteLine("Enter height");
+                            Console.WriteLine("Enter height[cm]");
                             height = Convert.ToDouble(Console.ReadLine());
-                            Console.WriteLine("Enter weight");
+                            Console.WriteLine("Enter weight[kg]");
                             weight = Convert.ToDouble(Console.ReadLine());
-                            Console.WriteLine("Enter depth");
+                            Console.WriteLine("Enter depth[cm]");
                             depth = Convert.ToDouble(Console.ReadLine());
-                            Console.WriteLine("Enter maxCapacity");
+                            Console.WriteLine("Enter maxCapacity[kg]");
                             maxCapacity = Convert.ToDouble(Console.ReadLine());
                             switch (option)
                             {
@@ -342,7 +350,7 @@ while (isWorking)
                             }
 
                             option = Convert.ToInt32(Console.ReadLine());
-                            if (option >= 0 && option <= containers.Count())
+                            if (option >= 0 && option < containers.Count())
                             {
                                 double weight;
                                 Console.WriteLine("Enter weight to add to container");
@@ -367,7 +375,7 @@ while (isWorking)
                             }
 
                             option = Convert.ToInt32(Console.ReadLine());
-                            if (option >= 0 && option <= containers.Count())
+                            if (option >= 0 && option < containers.Count())
                             {
                                 containers[option].UnloadCargo();
                             }

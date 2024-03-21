@@ -9,12 +9,14 @@ public class CContainer(double height, double weight, double depth, double maxCa
 
     public override void LoadCargo(double weightToLoad)
     {
+        base.LoadCargo(weightToLoad);
         int option = 100;
-        int counter = 0;
+        int counter = -1;
         
-        Console.WriteLine("Actual Temperature: "+Temperature);
+        Console.WriteLine("Actual Temperature: "+Temperature+" C");
         var arr = Enum.GetValues<Product>();
-        while (option > counter || option < 0)
+        Console.WriteLine("Select product to be stored in container");
+        while (option < 0 || option > counter)
         {
             counter = 0;
             foreach (var product in arr)
@@ -29,9 +31,8 @@ public class CContainer(double height, double weight, double depth, double maxCa
             option = Convert.ToInt32(Console.ReadLine());
         }
         
-        
-        base.LoadCargo(weightToLoad);
         ChoosedProduct = arr[option];
+        Console.WriteLine("Positive choosed : "+ ChoosedProduct);
     }
 }
 
