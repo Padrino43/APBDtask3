@@ -2,7 +2,7 @@
 
 public class Ship
 {
-    private static List<Ship> _ships = new();
+    public static List<Ship> _ships = new();
     private static int _id = 1;
     
     public int Id;
@@ -21,12 +21,11 @@ public class Ship
         MaxContainersWeight = maxContainersWeight;
         Weight = 0.0;
         _containers = [];
-
     }
 
-    public bool LoadSingleContainer(Container container)
+    public bool LoadSingleContainer(Container container, bool moving)
     {
-        if (container.IsOnShip) return false;
+        if (container.IsOnShip && moving == false) return false;
         if(_containers.Count + 1 > MaxContainers) return false;
         if (Weight + container.Weight * 0.001 > MaxContainersWeight) return false;
 
@@ -67,7 +66,7 @@ public class Ship
         _containers.Remove(container);
         container.IsOnShip = false;
         
-        Console.WriteLine("Positive remove :" + container);
+        Console.WriteLine("Positive remove: " + container);
     }
 
     public void MoveContainer(Container container, Ship toShip)
@@ -78,7 +77,7 @@ public class Ship
             return;
         }
 
-        if (toShip.LoadSingleContainer(container))
+        if (toShip.LoadSingleContainer(container,true))
         {
             _containers.Remove(container);
             Console.WriteLine("Positive move "+container+" to ship "+toShip);
@@ -105,12 +104,17 @@ public class Ship
         {
             double sum = (_containers[index].MaxCapacity + _containers[index].Weight)
                 - (container.MaxCapacity + container.Weight);
-            if (sum < 0 && Math.Abs(sum) <= MaxContainersWeight)
+            
+            if (sum <= 0.0 && Math.Abs(sum) <= MaxContainersWeight)
             {
                 Container temp = _containers[index];
                 _containers[index] = container;
                 Console.WriteLine("Positive replace "+container);
                 return temp;
+            }
+            else
+            {
+                Console.WriteLine("Replace failed because of container weight issue or quantity of it");
             }
             
         }

@@ -1,7 +1,6 @@
 ﻿
 using ContainerManagementApp;
 
-List<Ship> ships = new List<Ship>();
 List<Container> containers = new List<Container>();
 Ship? choosedShip = null;
 bool isWorking = true;
@@ -39,7 +38,7 @@ while (isWorking)
                         maxContainers = Convert.ToInt32(Console.ReadLine());
                         Console.WriteLine("Enter max containers in tons");
                         maxContainersWeight = Convert.ToDouble(Console.ReadLine());
-                        ships.Add(new Ship(maxSpeed, maxContainers, maxContainersWeight));
+                        new Ship(maxSpeed, maxContainers, maxContainersWeight);
                         Console.WriteLine("Created ship");
                         Console.ReadLine();
                         Console.Clear();
@@ -47,17 +46,17 @@ while (isWorking)
                     }
                     case 2:
                     {
-                        if (ships.Count > 0)
+                        if (Ship._ships.Count > 0)
                         {
-                            for (int i = 0; i < ships.Count; i++)
+                            for (int i = 0; i < Ship._ships.Count; i++)
                             {
-                                Console.WriteLine($"({i}){ships[i]}");
+                                Console.WriteLine($"({i}){Ship._ships[i]}");
                             }
                                 
                             option = Convert.ToInt32(Console.ReadLine());
-                            if (option >= 0 && option < ships.Count)
+                            if (option >= 0 && option < Ship._ships.Count)
                             {
-                                choosedShip = ships[option];
+                                choosedShip = Ship._ships[option];
                                 Console.WriteLine("Choosed ship " + choosedShip);
                                 Console.ReadLine();
                                 Console.Clear();
@@ -68,20 +67,20 @@ while (isWorking)
                     }
                     case 3:
                     {
-                        if (ships.Count > 0)
+                        if (Ship._ships.Count > 0)
                         {
-                            for (int i = 0; i < ships.Count; i++)
+                            for (int i = 0; i < Ship._ships.Count; i++)
                             {
-                                Console.WriteLine($"({i}){ships[i]}");
+                                Console.WriteLine($"({i}){Ship._ships[i]}");
                             }
 
                             option = Convert.ToInt32(Console.ReadLine());
-                            if (option >= 0 && option < ships.Count)
+                            if (option >= 0 && option < Ship._ships.Count)
                             {
 
-                                if (ships[option].Equals(choosedShip))
+                                if (Ship._ships[option].Equals(choosedShip))
                                     choosedShip = null;
-                                ships.RemoveAt(option);
+                                Ship._ships.RemoveAt(option);
                                 Console.WriteLine("Removed ship");
                                 Console.ReadLine();
                                 Console.Clear();
@@ -97,34 +96,41 @@ while (isWorking)
                             Console.Clear();
                             Console.WriteLine("Options:\n(1)Add container\n(2)Add containers");
                             option = Convert.ToInt32(Console.ReadLine());
-                            for (int i = 0; i < containers.Count; i++)
-                            {
-                                Console.WriteLine($"({i}){containers[i]}");
-                            }
                             switch (option)
                             {
                                 case 1:
                                 {
+                                    for (int i = 0; i < containers.Count; i++)
+                                    {
+                                        Console.WriteLine($"({i}){containers[i]}");
+                                    }
                                     Console.WriteLine("Choose container to add");
                                     option = Convert.ToInt32(Console.ReadLine());
-                                    if(choosedShip.LoadSingleContainer(containers[option]))
+                                    if(choosedShip.LoadSingleContainer(containers[option],false))
                                         containers.RemoveAt(option);
                                     break;
                                 }
                                 case 2:
                                 {
                                     List<Container> tempList = new List<Container>();
-                                    Console.WriteLine("Write numbers with enter (Exit when number is out of bound)");
-                                    while (option >= 0 && option < containers.Count())
+                                    bool working = true;
+                                    while (working)
                                     {
                                         Console.Clear();
                                         for (int i = 0; i < containers.Count; i++)
                                         {
                                             Console.WriteLine($"({i}){containers[i]}");
                                         }
+                                        Console.WriteLine("Write numbers with enter (Exit when number is out of bound)");
                                         option = Convert.ToInt32(Console.ReadLine());
-                                        tempList.Add(containers[option]);
-                                        containers.RemoveAt(option);
+                                        if (option < 0 || option > containers.Count() - 1 )
+                                        {
+                                            working = false;
+                                        }else
+                                        {
+                                            tempList.Add(containers[option]);
+                                            containers.RemoveAt(option);
+                                        }
                                     }
                                     
                                     Console.WriteLine("Do you sure you want add these containers?\n(1)yes");
@@ -143,6 +149,7 @@ while (isWorking)
                                     }
                                     else
                                     {
+                                        Console.WriteLine("Containers have not been moved ");
                                         containers.AddRange(tempList);
                                     }
                                     
@@ -173,14 +180,14 @@ while (isWorking)
                             {
                                 tempCon = choosedShip.GetContainer(option)!;
                                 Console.WriteLine("Choose ship to move");
-                                for (int i = 0; i < ships.Count; i++)
+                                for (int i = 0; i < Ship._ships.Count; i++)
                                 {
-                                    Console.WriteLine($"({i}){ships[i]}");
+                                    Console.WriteLine($"({i}){Ship._ships[i]}");
                                 }
                                 option = Convert.ToInt32(Console.ReadLine());
-                                if (option >= 0 && option < ships.Count())
+                                if (option >= 0 && option < Ship._ships.Count())
                                 {
-                                    choosedShip.MoveContainer(tempCon,ships[option]);
+                                    choosedShip.MoveContainer(tempCon,Ship._ships[option]);
                                 }
                                 
                                 Console.ReadLine();
@@ -199,7 +206,7 @@ while (isWorking)
                             Console.WriteLine("Write container serial number to replace");
                             for (int i = 0; i < choosedShip.GetContainerListLenght(); i++)
                             {
-                                Console.WriteLine($"({i}){choosedShip.GetContainer(i)}");
+                                Console.WriteLine($"{choosedShip.GetContainer(i)}");
                             }
                             string serialNumber = Console.ReadLine().ToUpper();
                             
